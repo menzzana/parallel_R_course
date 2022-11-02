@@ -58,11 +58,8 @@ style: |
     margin: 0 auto;
   }
 ---
-<!-- paginate: true -->
 
 # Best Practices for R in HPC
-
-## Course: Parallel computing in R
 
 ---
 
