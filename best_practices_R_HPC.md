@@ -1,6 +1,17 @@
 ---
 marp: true
+paginate: true
+_paginate: false
+footer: Dec. 2022 | Henric Zazzi & Pedro Ojeda-May | Course: Parallel computing in R
 style: |
+  section {
+    background-color: #fff;
+    color: #000;
+    background-image: url('public/img/hpc2n-pdc-logo.png');
+    background-repeat: no-repeat;
+    background-position: right 40px top 40px;
+    background-size: 8%;
+  }
   section h1 {
     text-align: center;
     }
@@ -133,7 +144,18 @@ integral(N)     # Calling the function
 
 ---
 
-* Once this initial program is written we 
+* Once this initial program is written, one can start looking for optimizations. Here, it is handy to time parts of the code with built-in functions:
+
+```
+system.time( integral(N) )
+```
+
+or use existing packages to get more statistics:
+
+```
+library(microbenchmark)
+bench <- microbenchmark( integral(N) , times=4 )
+```
 
 ---
 
