@@ -1,12 +1,21 @@
 ---
 marp: true
+paginate: true
+_paginate: false
+footer: Dec. 2022 | Henric Zazzi & Pedro Ojeda-May | Course: Parallel computing in R
 style: |
+  section {
+    background-image: url('public/img/hpc2n-pdc-logo.png');
+    background-repeat: no-repeat;
+    background-position: right 40px top 40px;
+    background-size: 8%;
+    }
   section h1 {
     text-align: center;
     }
   .column50 {
     float: left;
-    width: 48%;
+    width: 45%;
     border: 20px solid transparent;
     background-color: transparent;
     }
@@ -98,6 +107,7 @@ style: |
 # CPUs
 # Cores
 
+</div>
 </div>
 
 ---

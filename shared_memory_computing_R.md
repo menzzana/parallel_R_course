@@ -1,12 +1,21 @@
 ---
 marp: true
+paginate: true
+_paginate: false
+footer: Dec. 2022 | Henric Zazzi & Pedro Ojeda-May | Course: Parallel computing in R
 style: |
+  section {
+    background-image: url('public/img/hpc2n-pdc-logo.png');
+    background-repeat: no-repeat;
+    background-position: right 40px top 40px;
+    background-size: 8%;
+    }
   section h1 {
     text-align: center;
     }
   .column50 {
     float: left;
-    width: 48%;
+    width: 45%;
     border: 20px solid transparent;
     background-color: transparent;
     }
@@ -118,16 +127,30 @@ Provide standard building blocks for performing basic vector and matrix operatio
 
 # Linear algebra computing comparison
 
+* simulate a matrix of 1 million observations by n predictors and generate an outcome y.
+* Compute the least squares estimates of the linear regression coefficents when regressing the response y on the predictor matrix X
+
+## Function
+
 ```
-start_time <- Sys.time()
-x <- matrix(rnorm(1e6 * 100), 1e6, 100)
-b <- rnorm(100)
-y <- drop(x %*% b) + rnorm(1e6)
-b <- solve(crossprod(x), crossprod(x, y))
-print(Sys.time() - start_time)
+simLR <- function(n) {
+   x <- matrix(rnorm(1e6 * n), 1e6, n)
+   b <- rnorm(n)
+   y <- drop(x %*% b) + rnorm(n)
+   b <- solve(crossprod(x), crossprod(x, y))
+   }
 ```
 
-<row>
+---
+
+# Testing with different BLAS
+
+```
+start_time <- Sys.time()
+simLR(100)
+print(Sys.time() - start_time)
+```
+<div class="row">
 <div class="column50 columnblue">
 
 Without optimized BLAS
@@ -138,20 +161,17 @@ Without optimized BLAS
 With optimized BLAS
 
 </div>
-</row>
-<row>
-</div>
 <div class="column50 columnlightblue">
 
-**Time difference of 16.81325 secs**
+**Execution time of 16.81325 secs**
 
 </div>
 <div class="column50 columnlightblue">
 
-**Time difference of 7.17849 secs**
+**Execution time of 7.17849 secs**
 
 </div>
-</row>
+</div>
 
 ---
 
@@ -199,34 +219,19 @@ Process where a **CPU** splits each of its physical cores into virtual cores, wh
 <row>
 <div class="column50">
 
+# Example
+
 ```
 library(parallel)
 no_cores <- detectCores() - 1
 sprintf("Detected cores: %d", no_cores)
-x <- list(mtcars$hp, mtcars$wt, mtcars$qsec)
-print(mclapply(x, mean, mc.cores = no_cores)
+mclapply(100, simLR, mc.cores = no_cores)
 ```
 
 </div>
 <div class="column50 columnblue">
 
 Decrease *no_cores* by one for not interfering with master thread
-
-</div>
-</row><row>
-<div class="column50">
-
-### Better example
-
-```
-library(parallel)
-no_cores <- detectCores() - 1
-sprintf("Detected cores: %d", no_cores)
-x < - c(1:10000)
-print(mclapply(x, 
-   function(x) { sum(tanh(1:x)) }
-   , mc.cores = no_cores))
-```
 
 </div>
 <div class="column50 columnblue">
@@ -260,11 +265,11 @@ With small tasks, the overhead of scheduling the task and returning the result c
 ```
 library(foreach)
 foreach(i = 1:10) %do% {
-    sqrt(i)
-    }
+   MyFunction(i)
+   }
 ```
 
-1. Calculates the square root of numbers from 1 to 10
+1. **Sequential** calculation of the function on values 1 to 10
 1. Returns a list
 
 ---
@@ -273,7 +278,8 @@ foreach(i = 1:10) %do% {
 
 1. Packages needed
    ```
-   library(doparallel)
+   library(parallel)
+   library(doParallel)
    ```
 1. Shows how many parallel processes are available
    ```
@@ -281,7 +287,7 @@ foreach(i = 1:10) %do% {
    ```
 1. Register the number of processes
    ```
-   registerDoParallel([cluster])
+   registerDoParallel()
    ```
 1. Substitute **%do%** with **%dopar%**
 
@@ -290,17 +296,37 @@ foreach(i = 1:10) %do% {
 # foreach parallel example
 
 ```
-library(foreach)
+library(parallel)
 library(doParallel)
+library(foreach)
 registerDoParallel()
-foreach(i=1:10000) %dopar% { 
-   sum(tanh(1:i))
+foreach(i=1:10) %dopar% { 
+   MyFunction(i)
    }
 ```
 
+1. **Parallel** calculation of the function on values 1 to 10
+
 ---
 
-# Other userful functions
+# Defining the number of parallel processes
+
+1. Set the number of processes
+   ```
+   nproc <- makeCluster(<number of processes>)
+   ```
+1. Register the number of processes
+   ```
+   registerDoParallel(nproc)
+   ```
+1. End all processes
+   ```
+   stopCluster(nproc)
+   ```
+
+---
+
+# Userful parameters
 
 Process the tasks results as they are generated
 
@@ -310,10 +336,10 @@ Process the tasks results as they are generated
 
 ```
 library(foreach)
-foreach(i = 1:10, .combine=’[type]’) 
-    %dopar% {
-    sqrt(i)
-    }
+foreach(i = 1:10, .combine='[type]') 
+      %dopar% {
+   MyFunction(i)
+   }
 ```
 
 </div>
@@ -334,7 +360,7 @@ foreach(i = 1:10, .combine=’[type]’)
 
 # Working examples
 
-1. Equivalinet to **lapply(x, mean)**
+1. Equivalent to **lapply(x, mean)**
    ```
    foreach(x = cbind(mtcars$hp, mtcars$wt, mtcars$qsec)) %do%
      mean(x)
