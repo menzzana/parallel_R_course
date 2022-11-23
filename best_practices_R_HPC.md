@@ -109,7 +109,9 @@ mySum*h*h     # Printing out the result
 
 * Use some Version Control software
    * Git
-      * SNIC Course 2021 (https://tinyurl.com/2p8cusyu)
+      * HPC2N/UPPMAX 2021 (https://tinyurl.com/2p8cusyu)
+      * HPC2N/UPPMAX 2022 (https://tinyurl.com/jk6a6cez)
+      * CodeRefinery (https://tinyurl.com/yckrkx2b)
    * Mercurial
 
 * and some Repository
@@ -156,7 +158,43 @@ bench <- microbenchmark( integral(N) , times=4 )
 
 ---
 
+* Organize your scripts in a Project that may contain for instance:
 
+```
+Project 
+|      Readme.md
+|      License.txt
+|      
++------scripts/
+|      |    function1.R
+|      |    function2.R
+|
++------documentation/
+       |    doc.md
+```
 
 ---
 
+* If even by using the parallel schemes mentioned in this course
+the performance of your code is low, maybe you could consider
+the porting of expensive parts in a lower level language such as
+C/C++, Fortran or Julia. R has several tools to make interfaces
+with several languages.
+
+---
+
+* Run only lightweight tasks on the login nodes otherwise use the
+queueing system.
+
+---
+
+* Be aware that some libraries create **threads** by default. You
+may read about the libraries that you are using and fix the appropriate
+number of threads so that the job does not overload the allocated
+CPU resources. The following command line tool is your friend:
+
+```
+job-usage Job_ID
+```
+
+---
