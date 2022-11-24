@@ -287,16 +287,6 @@ srun -n 1 R --no-save < [R file]
 
 ---
 
-# Table of functions
-
-| Function | Arguments | Objective | Input | Output |
-| --- | --- | --- | --- | --- |
-| apply | apply (x, M, FUN) | Apply to rows (M=1), columns (M=2), both (M=c(1,2()) | Data frame or vector | Vector, list, array |
-| lapply | lapply(x, FUN) | Apply to all elements of the input | List, vector or data frame | list |
-| sapply | sapply(x, FUN) | apply to all the elements | List, vector or data frame | Vector, matrix |
-
----
-
 # Example of lapply
 
 * We have a list of vectors (Default dataset in R: *motor trend cars*)
@@ -313,6 +303,16 @@ srun -n 1 R --no-save < [R file]
   ``` 
   print(lapply(x, mean))
   ``` 
+
+---
+
+# Table of functions
+
+| Function | Arguments | Objective | Input | Output |
+| --- | --- | --- | --- | --- |
+| apply | apply (x, M, FUN) | Apply to rows (M=1), columns (M=2), both (M=c(1,2()) | Data frame or vector | Vector, list, array |
+| lapply | lapply(x, FUN) | Apply to all elements of the input | List, vector or data frame | list |
+| sapply | sapply(x, FUN) | apply to all the elements | List, vector or data frame | Vector, matrix |
 
 ---
 

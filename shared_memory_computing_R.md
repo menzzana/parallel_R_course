@@ -55,19 +55,22 @@ style: |
 
 # Overview
 
-1. Serial execution of R
+1. Execution types in R
 1. Using optimized libraries
-1. The parallel package
-1. The foreach package
+1. The parallel package (shared)
+1. The foreach package (shared, distributed)
 
 ---
 
-# Serial execution in R
+# Execution types in R
 
 * Default R only uses serial computing
 * Shared memory parallel computing is using…
   * Thread, Pthread (posix thread)
-  * OpenMP (Open Multi-Processing, multithreading)
+  * Sockets
+  * Rarely OpenMP (Open Multi-Processing, multithreading)
+* Distributed memory computing
+  * Poor scaling of R above one node
 
 ---
 
@@ -193,10 +196,6 @@ With optimized BLAS
    ```
    detectCores(logical = TRUE/FALSE)
    ```
-1. Contains function mclapply
-   ```
-   mclapply(x, FUN, mc.cores = n))
-   ```
 
 </div>
 <div class="column50 columnblue">
@@ -214,17 +213,47 @@ Process where a **CPU** splits each of its physical cores into virtual cores, wh
 
 ---
 
-# Parallel example
+# Types of parallel calculations
+
+## Forking
+
+* <font color=green>Faster than sockets.</font>
+* <font color=green>Because it copies the existing version of R, your entire workspace exists in each process.</font>
+* <font color=green>Trivially easy to implement.</font>
+* <font color=red>Only works on POSIX systems (Mac, Linux, Unix, BSD) and not Windows.</font>
+* <font color=red>Because processes are duplicates, it can cause issues specifically with random number generation</font>
+
+---
+
+# Types of parallel calculations
+
+## Socket
+
+* <font color=green>Works on any system (including Windows).</font>
+* <font color=green>Each process on each node is unique so it can’t cross-contaminate but slower</font>
+* <font color=red>Each process is unique so it will be slower</font>
+* <font color=red>Things such as package loading need to be done in each process separately. Variables defined on your main version of R don’t exist on each core unless explicitly placed there.</font>
+* <font color=red>More complicated to implement.</font>
+
+---
+
+# Forking parallel example
 
 <row>
 <div class="column50">
+
+## List of functions
+
+```
+mclapply(X, FUN, ...)
+mcmapply(X, FUN, ...)
+```
 
 # Example
 
 ```
 library(parallel)
 no_cores <- detectCores() - 1
-sprintf("Detected cores: %d", no_cores)
 mclapply(100, simLR, mc.cores = no_cores)
 ```
 
@@ -243,24 +272,60 @@ With small tasks, the overhead of scheduling the task and returning the result c
 
 ---
 
+# Socket parallel example
+
+<row>
+<div class="column50">
+
+## List of functions
+
+```
+parLapply(cluster, X, FUN)
+parSapply(cluster, X, FUN)
+```
+
+# Example
+
+```
+library(parallel)
+no_cores <- detectCores() - 1
+cl <- makeCluster(no_cores)
+parLapply(cl, 100, simLR)
+stopCluster(cl)
+```
+
+</div>
+<div class="column50 columnblue">
+
+Decrease *no_cores* by one for not interfering with master thread
+
+</div>
+</row>
+
+---
+
+# Passing objects to sockets
+
+* If libraries are used you need to load the package to the process
+  ```
+  clusterEvalQ(cl, library([LIBRARY NAME]))
+  ```
+* Can also be used for other functionality/calculations
+  ```
+  clusterEvalQ(cl, 2 + 2)
+  ```
+* Variables are not present within the parallelisation and must be passed.
+  ```
+  clusterExport(cl, "x")
+  clusterEvalQ(cl, x)
+  ```
+
+---
+
 # The foreach package
 
 ---
-
-# Foreach package
-
-1. Must be installed
-   ```
-   library(foreach)
-   ```
-1. Similar use as **OpenMP** https://en.wikipedia.org/wiki/OpenMP
-1. Works for sequential, shared and distributed memory computing
-   * No need to detect cores in shared memory computing
-1. More information at https://cran.r-project.org/web/packages/foreach/foreach.pdf
-
----
-
-# Foreach example
+# Serial Foreach example
 
 ```
 library(foreach)
@@ -274,11 +339,27 @@ foreach(i = 1:10) %do% {
 
 ---
 
-# How about calculations in parallel: doParallel package
+# Using Foreach package in parallel
+
+1. Must be installed
+   ```
+   library(parallel)
+   library(foreach)
+   library(doParallel)
+   ```
+1. Similar use as **OpenMP** https://en.wikipedia.org/wiki/OpenMP
+1. Works for sequential, shared and distributed memory computing
+   * No need to detect cores in shared memory computing
+1. More information at https://cran.r-project.org/web/packages/foreach/foreach.pdf
+
+---
+
+# How about parallel calculations: doParallel package
 
 1. Packages needed
    ```
    library(parallel)
+   library(foreach)
    library(doParallel)
    ```
 1. Shows how many parallel processes are available
@@ -293,12 +374,12 @@ foreach(i = 1:10) %do% {
 
 ---
 
-# foreach parallel example
+# Parallel shared memory example
 
 ```
 library(parallel)
-library(doParallel)
 library(foreach)
+library(doParallel)
 registerDoParallel()
 foreach(i=1:10) %dopar% { 
    MyFunction(i)
@@ -311,6 +392,7 @@ foreach(i=1:10) %dopar% {
 
 # Defining the number of parallel processes
 
+1. Necessary for distributed memory computing
 1. Set the number of processes
    ```
    nproc <- makeCluster(<number of processes>)
@@ -335,7 +417,6 @@ Process the tasks results as they are generated
 
 
 ```
-library(foreach)
 foreach(i = 1:10, .combine='[type]') 
       %dopar% {
    MyFunction(i)
@@ -376,5 +457,26 @@ foreach(i = 1:10, .combine='[type]')
    foreach(i=1:ncol(m), .combine=c) %do%
      mean(m[,i])
    ```
+
+---
+
+# Distributed computing
+
+## foreach
+
+* Can be used for distributed computing using *doMPI* library
+* R seldomly scales above one node
+
+```
+library(doMPI)
+cl <- startMPIcluster()
+# You define N processes when allocating your job
+registerDoMPI(cl)
+x <- foreach(i=1:10) %dopar% {
+  sqrt(i)
+  }
+closeCluster(cl)
+mpi.quit()
+```
 
 ---

@@ -108,7 +108,7 @@ mclapply(y, mc.cores = [no_cores], clone, source = x)
 
 ---
 
-# K-means clustering
+# K-means clustering  DEPRECATED
 
 ### Basic function with linear execution
 
@@ -117,10 +117,10 @@ library(cluster)
 kmeans(data.frame(),centers=[centroids])
 ```
 
-### Package knor provide parallel k-means
+### Package knor provide parallel k-means DEPRECATED
 
 ```
-library(knor)
+library(knor) DEPRECATED
 Kmeans(data.matrix(),centers=[centroids],nthread=[threads],omp = FALSE)
 ```
 

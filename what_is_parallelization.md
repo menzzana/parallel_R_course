@@ -264,6 +264,11 @@ Swedish project managed via **SNIC**
 
 # Scaling
 
+## "More processes does not always mean faster performance"
+
+* Code cannot be parallelized
+* Overhead of creating parallel process take more time than the parallel process itself
+
 ---
 
 # The computational dilemma
@@ -318,7 +323,7 @@ C/C++, Fortran, Assembler
 ![height:100px center](public/img/ahmdal.png)
 
 * S<sub>latency</sub> is the theoretical speedup of the task
-* *s* is the number of threads
+* *s* is the number of processes
 * *p* is the proportion of executation time that benefits from improved resources
 
 <div class="columnblue">

@@ -72,3 +72,12 @@ calcpi <- function(no) {
 </div></row>
 
 ---
+
+# Lab: Calculate PI using parallel lapply
+
+<row>
+<div class="column50">
+
+1. Implement the function calcpi using **lapply**
+1. Time your code
+ 
