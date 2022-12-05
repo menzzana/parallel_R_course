@@ -196,5 +196,3 @@ CPU resources. The following command line tool is your friend:
 ```
 job-usage Job_ID
 ```
-
----

@@ -171,22 +171,6 @@ https://www.top500.org/lists/top500/2020/11/ (Nov. 2020)
 
 </div></div>
 
----
-
-<div class="row">
-<div class="column50">
-
-![](public/img/lumi.png)
-
-Swedish project managed via **SNIC**
-
-</div>
-<div class="column50">
-
-![](public/img/lumi_collaborators.png)
-
-</div>
-</div>
 
 ---
 

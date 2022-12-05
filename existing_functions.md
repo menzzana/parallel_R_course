@@ -110,18 +110,30 @@ mclapply(y, mc.cores = [no_cores], clone, source = x)
 
 # K-means clustering
 
+
+---
+
+
 ### Basic function with linear execution
 
 ```
-library(cluster)
+library(clusternor)
 kmeans(data.frame(),centers=[centroids])
 ```
 
-### Package knor provide parallel k-means
+### Package knor provide parallel k-means 
 
 ```
 library(clusternor)
 Kmeans(data.matrix(),centers=[centroids],nthread=[threads])
+```
+
+
+```
+library(clusternor)
+iris.mat <- as.matrix(iris[,1:4])
+k <- length(unique(iris[, dim(iris)[2]])) # Number of unique classes
+kms <- Kmeans(iris.mat, k, nthread=1)
 ```
 
 ---
