@@ -86,7 +86,7 @@ style: |
 
 # Parallel methodology
 
-![](public/img/parallel_computation.png)
+![height:500px center](public/img/parallel_computation.png)
 
 ---
 
@@ -138,10 +138,9 @@ per second*, **flop/s, FLOPS**
 
 # Top 500 list
 
-![height:500px center](public/img/top500.png)
+![height:450px center](public/img/top500.png)
 
-November, 2020
-https://www.top500.org/lists/top500/2020/11/
+https://www.top500.org/lists/top500/2020/11/ (Nov. 2020)
 
 ---
 
@@ -213,7 +212,7 @@ Swedish project managed via **SNIC**
 
 # Pros and cons of shared memory
 
-![center](public/img/shared_jobs.png)
+![height:200px center](public/img/shared_jobs.png)
 
 ### Data is available in same hardware location
 
@@ -232,7 +231,7 @@ Swedish project managed via **SNIC**
 <div class="row">
 <div class="column50">
 
-![](public/img/distributed_hardware.png)
+![height:500px center](public/img/distributed_hardware.png)
 
 </div>
 <div class="column50">
@@ -245,7 +244,7 @@ Swedish project managed via **SNIC**
 
 # Distributed memory computing
 
-![height:350px center](public/img/distributed_jobs.png)
+![height:300px center](public/img/distributed_jobs.png)
 
 1. Analysis can be expanded across several nodes
 1. Each CPU has access to only its own memory
@@ -314,7 +313,7 @@ C/C++, Fortran, Assembler
 
 # Scaling
 
-![height:600px center](public/img/scaling.png)
+![height:500px center](public/img/scaling.png)
 
 ---
 
@@ -326,6 +325,8 @@ C/C++, Fortran, Assembler
 * *s* is the number of processes
 * *p* is the proportion of executation time that benefits from improved resources
 
+---
+
 <div class="columnblue">
 
 ### Example
@@ -335,5 +336,4 @@ S=1/((1-0.8)+0.8/15)=**3.9**
 
 </div>
 
----
 
