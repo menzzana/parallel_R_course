@@ -221,11 +221,17 @@ This package is installed with the R/4.0.4 module on Kebnekaise, but you probabl
 
 ---
 
-# Installing the R package "clusternor" 
+# Installing the R package "clusternor" on Kebnekaise 
 
-The "clusternor" package (https://github.com/neurodata/knorR) has the prerequisite "Rcpp" and the suggested dependency "testthat". Both are installed with R/4.0.4 on Kebnekaise. 
+"clusternor" package (https://github.com/neurodata/knorR)
 
-
+* Setup a directory for R packages (already done if you have installed packages).
+  * Add ```R_LIBS_USER="path/to/rpackages"``` to the file .Renviron (change "path/to/rpackages" to actual location)
+  * Example: ```R_LIBS_USER="/proj/nobackup/support-hpc2n/bbrydsoe/R-packages-%V"```
+* Since "clusternor" is no longer on CRAN, we have to install from their GitHub. 
+* ```git clone --recursive https://github.com/flashxio/knorR.git```
+* cd knorR
+* ./install.sh
 
 ---
 
