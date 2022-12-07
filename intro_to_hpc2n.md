@@ -158,10 +158,10 @@ You start R by typing ```R``` on the command line.
 
 # R packages needed for this course
 
-* parallel
+* **parallel**
 * **Rmpi**
 * **foreach**
-* **doparallel**
+* **doParallel**
 * **cluster**
 * **boot**
 * knor (now called clusternor)
@@ -213,7 +213,17 @@ Regardless of how you installed the R package, you can now use it the same way a
 
 ---
 
-# EXAMPLE: installing the R package "parallel" 
+# Installing the R package ""
+
+This package is installed with the R/4.0.4 module on Kebnekaise, but you probably have to install it on your own computer. 
+
+
+
+---
+
+# Installing the R package "clusternor" 
+
+The "clusternor" package (https://github.com/neurodata/knorR) has the prerequisite "Rcpp" and the suggested dependency "testthat". Both are installed with R/4.0.4 on Kebnekaise. 
 
 
 
