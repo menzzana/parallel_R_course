@@ -121,7 +121,7 @@ library(clusternor)
 kmeans(data.frame(),centers=[centroids])
 ```
 
-### Package knor provide parallel k-means 
+### Package clusternor provide parallel k-means 
 
 ```
 library(clusternor)

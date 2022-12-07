@@ -61,6 +61,10 @@ style: |
 
 # Using R in HPC2N
 
+* Connect to the Kebnekaise cluster (ThinLinc)
+* Load the modules for R
+* Start Rstudio session on the terminal
+
 ---
 
 
