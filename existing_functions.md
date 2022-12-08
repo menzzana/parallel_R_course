@@ -50,8 +50,6 @@ style: |
 
 # Currently existing parallel functions in R
 
-## Course: Parallel computing in R
-
 ---
 
 # Example: replicate

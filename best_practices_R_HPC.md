@@ -66,44 +66,44 @@ style: |
 # Start with a working single core program
 
 * This code should produce correct results without any optimizations
-> "Premature optimization is the root of all evil"  --- Donald Knuth
+  > "Premature optimization is the root of all evil"  --- Donald Knuth
 
-```
-N <- 10000
-h <- pi/N
-mysum <-0
+  ```
+  N <- 10000
+  h <- pi/N
+  mysum <-0
 
-for (i in 1:N) {
-  x <- h*(i-0.5)
-  for (j in 1:N) {
-    y <- h*(j-0.5)
-    mysum <- mysum + sin(x+y)
+  for (i in 1:N) {
+    x <- h*(i-0.5)
+    for (j in 1:N) {
+      y <- h*(j-0.5)
+      mysum <- mysum + sin(x+y)
+    }
   }
-}
 
-mysum*h*h
-```
+  mysum*h*h
+  ```
 
 ---
 
 * Write clean code and write useful comments
 
-```
-# Code for computing a 2D sinus integral
-N <- 10000  # Number of grid points
-h <- pi/N   # Size of grid
-mySum <-0   # Camel convention for variables' names
+  ```
+  # Code for computing a 2D sinus integral
+  N <- 10000  # Number of grid points
+  h <- pi/N   # Size of grid
+  mySum <-0   # Camel convention for variables' names
 
-for (i in 1:N) {               # Discretization in the x direction
-  x <- h*(i-0.5)               # x coordinate of the grid cell
-  for (j in 1:N) {             # Discretization in the y direction
-    y <- h*(j-0.5)             # y coordinate of the grid cell
-    mySum <- mySum + sin(x+y)  # Computing the integral
+  for (i in 1:N) {               # Discretization in the x direction
+    x <- h*(i-0.5)               # x coordinate of the grid cell
+    for (j in 1:N) {             # Discretization in the y direction
+      y <- h*(j-0.5)             # y coordinate of the grid cell
+      mySum <- mySum + sin(x+y)  # Computing the integral
+    }
   }
-}
 
-mySum*h*h     # Printing out the result
-```
+  mySum*h*h     # Printing out the result
+  ```
 
 ---
 
@@ -122,60 +122,67 @@ mySum*h*h     # Printing out the result
 
 * Organize your code by enclosing repetitive/important code into a function
 
-```
-integral <- function(N){ 
-  # Function for computing a 2D sinus integral
-  h <- pi/N   # Size of grid
-  mySum <-0   # Camel convention for variables' names
+  ```
+  integral <- function(N){ 
+    # Function for computing a 2D sinus integral
+    h <- pi/N   # Size of grid
+    mySum <-0   # Camel convention for variables' names
   
-  for (i in 1:N) {     # Discretization in the x direction
-     x <- h*(i-0.5)    # x coordinate of the grid cell
-     for (j in 1:N) {  # Discretization in the y direction
-       y <- h*(j-0.5)  # y coordinate of the grid cell
-       mySum <- mySum + sin(x+y)  # Computing the integral
-     }
+    for (i in 1:N) {     # Discretization in the x direction
+       x <- h*(i-0.5)    # x coordinate of the grid cell
+       for (j in 1:N) {  # Discretization in the y direction
+         y <- h*(j-0.5)  # y coordinate of the grid cell
+         mySum <- mySum + sin(x+y)  # Computing the integral
+       }
+    }
+    return(mySum*h*h)
   }
-  return(mySum*h*h)
-}
 
-integral(N)     # Calling the function
-```
+  integral(N)     # Calling the function
+  ```
 
 ---
 
-* Once this initial program is written, one can start looking for optimizations. Here, it is handy to time parts of the code with built-in functions:
+# Now go for the parallel version
 
-```
-system.time( integral(N) )
-```
+Once this initial program is written, one can start looking for optimizations
+Here, it is handy to time parts of the code with built-in functions:
 
-or use existing packages to get more statistics:
+  ```
+  system.time( integral(N) )
+  ```
 
-```
-library(microbenchmark)
-bench <- microbenchmark( integral(N) , times=4 )
-```
+  or use existing packages to get more statistics:
 
----
-
-* Organize your scripts in a Project that may contain for instance:
-
-```
-Project 
-|      Readme.md
-|      License.txt
-|      
-+------scripts/
-|      |    function1.R
-|      |    function2.R
-|
-+------documentation/
-       |    doc.md
-```
+  ```
+  library(microbenchmark)
+  bench <- microbenchmark( integral(N) , times=4 )
+  ```
 
 ---
 
-* If even by using the parallel schemes mentioned in this course
+# Organize your scripts in a Project 
+
+it may contain for instance:
+
+  ```
+  Project 
+  |      Readme.md
+  |      License.txt
+  |      
+  +------scripts/
+  |      |    function1.R
+  |      |    function2.R
+  |
+  +------documentation/
+         |    doc.md
+  ```
+
+---
+
+# Porting heavy parts of the code to other languages
+
+If even by using the parallel schemes mentioned in this course
 the performance of your code is low, maybe you could consider
 the porting of expensive parts in a lower level language such as
 C/C++, Fortran or Julia. R has several tools to make interfaces
@@ -183,22 +190,34 @@ with several languages.
 
 ---
 
-* Run only lightweight tasks on the login nodes otherwise use the
+# Working on the login nodes
+
+Run only lightweight tasks on the login nodes otherwise use the
 queueing system.
 
 ---
 
-* Be aware that some libraries create **threads** by default. You
+# Be cautious about implicit parallelism
+
+Be aware that some libraries create **threads** by default. You
 may read about the libraries that you are using and fix the appropriate
 number of threads so that the job does not overload the allocated
 CPU resources. The following command line tool is your friend:
 
-```
-job-usage Job_ID
-```
+  ```
+  job-usage Job_ID
+  ```
 
 ---
 
-* The memory available per core on Kebnekaise is between 4.5-7 GB, if
+# For memory expensive jobs
+
+The memory available per core on Kebnekaise is between 4.5-7 GB, if
 your code is memory demanding, you may request more CPUs than needed
 with the **-n** option in the batch script
+
+# For many single core jobs 
+
+---
+
+**Job Arrays** feature of *SLURM* is your friend

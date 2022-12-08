@@ -60,8 +60,6 @@ style: |
 
 # What is parallelization
 
-## Course: Parallel computing in R
-
 ---
 
 # Overview
