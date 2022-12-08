@@ -233,4 +233,6 @@ If you are interested in many single jobs running with different
 set of parameters, for instance, you may use the **Job Arrays** feature
 available in *SLURM*
 
-
+```
+#SBATCH --array=1-28
+```
