@@ -231,3 +231,8 @@ with the **-n** option in the batch script
 ---
 
 **Job Arrays** feature of *SLURM* is your friend
+
+---
+
+# Keep your **.bashrc** file simple
+
