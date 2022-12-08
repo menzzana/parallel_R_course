@@ -86,6 +86,10 @@ style: |
 
 ---
 
+* This initial program will be your baseline for further optimizations
+
+---
+
 * Write clean code and write useful comments
 
   ```
