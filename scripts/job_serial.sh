@@ -11,6 +11,6 @@ ml purge > /dev/null 2>&1
 ml GCC/10.2.0  OpenMPI/4.0.5
 ml R/4.0.4
 
-R CMD BATCH --no-save --no-restore -f serial.R
+R CMD BATCH --no-save --no-restore serial.R
 
-Rscript serial.R 3.14
+#Rscript --no-save --no-restore serial.R 3.14
