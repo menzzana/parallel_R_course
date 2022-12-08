@@ -222,3 +222,15 @@ boot.ci(x, type="basic", parallel="[type]", ncpus=[cores], cl=[cluster])
 ---
 
 # There might be more already parallel functions
+
+--- 
+
+# Job Arrays
+
+---
+
+If you are interested in many single jobs running with different
+set of parameters, for instance, you may use the **Job Arrays** feature
+available in *SLURM*
+
+

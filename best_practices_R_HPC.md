@@ -199,4 +199,6 @@ job-usage Job_ID
 
 ---
 
-* The memory available per core 
+* The memory available per core on Kebnekaise is between 4.5-7 GB, if
+your code is memory demanding, you may request more CPUs than needed
+with the **-n** option in the batch script
