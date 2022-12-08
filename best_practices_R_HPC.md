@@ -210,6 +210,12 @@ CPU resources. The following command line tool is your friend:
 
 ---
 
+# Search if there is a faster version of expensive functions
+
+For instance, for principal components: **prcomp**, **princomp**
+
+---
+
 # For memory expensive jobs
 
 The memory available per core on Kebnekaise is between 4.5-7 GB, if
