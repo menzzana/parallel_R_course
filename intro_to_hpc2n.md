@@ -213,11 +213,25 @@ Regardless of how you installed the R package, you can now use it the same way a
 
 ---
 
-# Installing the R package ""
+# Installing other R packages
 
-This package is installed with the R/4.0.4 module on Kebnekaise, but you probably have to install it on your own computer. 
+While clsuternor is the only one of the needed packages not installed on Kebnekaise, there will likely be several to install on your own computer. 
 
+NOTE: if you are using Linux Ubuntu (R installed with ```sudo apt-get install r-base```), some packages can be installed from the Ubuntu repo: 
 
+* r-cran-rmpi r-cran-foreach r-cran-doparallel r-cran-cluster r-cran-boot
+
+Install the "parallel" package with ```install.packages(c("parallel"))``` from within R. 
+
+Check with ```installed.packages()``` (from inside R) which are installed. 
+
+---
+
+# Installing R packages for the course
+
+* Install help, all OS: https://www.hpc2n.umu.se/events/courses/2022/R-in-HPC/setup 
+
+* Specific for Linux Ubuntu: https://umeauniversity.sharepoint.com/:w:/s/HPC2N630/EeLAM89iSrhHuMbduJkzjDwBoqxTHNo5TF6b0TplvaoLPw?e=gxgW4p
 
 ---
 
@@ -235,27 +249,127 @@ This package is installed with the R/4.0.4 module on Kebnekaise, but you probabl
 
 ---
 
+# Installing Rstudio - own computer 
 
+To install Rstudio on your own computer, see the links on setup: 
 
----
+* https://www.hpc2n.umu.se/events/courses/2022/R-in-HPC/setup 
 
-
-
----
-
-
+* Specific for Linux Ubuntu: https://umeauniversity.sharepoint.com/:w:/s/HPC2N630/EeLAM89iSrhHuMbduJkzjDwBoqxTHNo5TF6b0TplvaoLPw?e=gxgW4p
 
 ---
 
+# Accessing Rstudio on Kebnekaise 
 
+To use Rstudio on Kebnekaise, you need to connect using ThinLinc as it is not installed on the regular login nodes. It matches R 4.0.4. 
 
----
-
-
-
----
-
+![width:550px](public/img/rstudio.png)
 
 ---
 
+# Running longer/paralle R programs 
 
+* Large/long/parallel jobs **must** be run through the batch system 
+
+* SLURM is an Open Source job scheduler. It provides three key functions
+  * Keeps track of available system resources
+  * Enforces local system resource usage and job scheduling policies
+  * Manages a job queue, distributing work across resources according to policies
+* To run a batch job, you need a SLURM submit file (batch submit file, batch script, job script ...) 
+* When submitting jobs to the batch system, you **must** use the course project! 
+* Guides and documentation at: http://www.hpc2n.umu.se/support
+
+---
+
+# Useful commands to the Batch System
+
+* Submit job: ```sbatch <jobscript.sh>``` (successful submission returns a job-id number) 
+* As default, output/errors are found in ```slurm-<job-id>.out``` 
+* Get list of all jobs: ```squeue```
+* Get list of only your jobs: ```squeue -u <username>```
+* Adding the flag ```--start``` gives the estimated job start time. This can change depending on other people's jobs. 
+* Check on a specific job: ```scontrol show job <job id>```
+* Delete a specific job: ```scancel <job id>```
+* Delete all your jobs: ```scancel -u <username>```
+
+---
+
+# SLURM batch script for a serial R job 
+
+```console
+!/bin/bash
+#SBATCH -A SNIC2022-22-1012 #Project id
+#SBATCH -J my-serial-R-job #Name of job
+#SBATCH --time=00:10:00 #Jobtime (HH:MM:SS) Max: 168H
+#SBATCH -o Rjob_%j.out #Naming the output file
+#SBATCH -e Rjob_%j.err #Naming the error file
+#SBATCH -n 1 #Number of tasks (Default is 1 CPU/task. Change with --cpus-per-task) 
+
+ml purge > /dev/null 2>&1
+ml GCC/10.2.0 OpenMPI/4.0.5 R/4.0.4
+
+R --no-save --quiet < input.R > Rexample.out
+```
+
+---
+
+# SLURM batch script for a parallel R job, using Rmpi
+
+NOTE that you need to load the Rmpi library within your R script for this to work
+
+```console
+!/bin/bash
+#SBATCH -A SNIC2022-22-1012
+#SBATCH -n 8
+#SBATCH --time=00:30:00
+
+ml purge > /dev/null 2>&1
+ml GCC/10.2.0 OpenMPI/4.0.5 R/4.0.4
+
+mpirun R -q -f <program>.R
+```
+
+---
+
+# SLURM batch script for a parallel R job, using doParallel
+
+Assume we have a small R program, "doParallel.R": 
+
+```R
+library(doParallel)
+cl <- makeCluster(4)
+registerDoParallel(cl)
+
+# code that we want executed in parallel
+
+stopCluster(cl)
+```
+
+---
+
+# SLURM batch script for a parallel R job, using doParallel - continued
+
+ Batch script to submit the R program on the previous slide: 
+
+```console
+!/bin/bash
+#SBATCH -A SNIC2022-22-1012
+#SBATCH -t 00:10:00
+#SBATCH -N 1
+#SBATCH -c 4
+
+ml purge > /dev/null 2>&1
+ml GCC/10.2.0 OpenMPI/4.0.5 R/4.0.4
+
+R -q --slave -f doParallel.R
+```
+
+---
+
+# Various useful info
+
+* A project has been set up for the workshop: ```SNIC2022-22-1012```
+* You use it in your batch submit file by adding: 
+  * ```#SBATCH -A SNIC2022-22-1012```
+* Kebnekaise ThinLinc login node: ```kebnekaise-tl.hpc2n.umu.se```
+* Kebnekaise "regular" login node: ```kebnekaise.hpc2n.umu.se```
