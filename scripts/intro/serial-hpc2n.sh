@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 #SBATCH -A SNIC2022-22-1012 #Project id
 #SBATCH -J my-serial-R-job #Name of job
 #SBATCH --time=00:10:00 #Jobtime (HH:MM:SS) Max: 168H

@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 #SBATCH -A SNIC2022-22-1012
 #SBATCH -t 00:10:00
 #SBATCH -N 1

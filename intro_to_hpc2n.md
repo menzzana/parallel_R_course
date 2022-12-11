@@ -297,7 +297,7 @@ To use Rstudio on Kebnekaise, you need to connect using ThinLinc as it is not in
 # SLURM batch script for a serial R job 
 
 ```console
-!/bin/bash
+#!/bin/bash
 #SBATCH -A SNIC2022-22-1012 #Project id
 #SBATCH -J my-serial-R-job #Name of job
 #SBATCH --time=00:10:00 #Jobtime (HH:MM:SS) Max: 168H
@@ -315,10 +315,10 @@ R --no-save --quiet < input.R > Rexample.out
 
 # SLURM batch script for a parallel R job, using Rmpi
 
-NOTE that you need to load the Rmpi library within your R script for this to work
+NOTE that you need to load the Rmpi library within your R script for this to work. NOTE also that you can NOT spawn slaves with mpi.spawn.Rslaves()! 
 
 ```console
-!/bin/bash
+#!/bin/bash
 #SBATCH -A SNIC2022-22-1012
 #SBATCH -n 8
 #SBATCH --time=00:30:00
@@ -352,7 +352,7 @@ stopCluster(cl)
  Batch script to submit the R program on the previous slide: 
 
 ```console
-!/bin/bash
+#!/bin/bash
 #SBATCH -A SNIC2022-22-1012
 #SBATCH -t 00:10:00
 #SBATCH -N 1
