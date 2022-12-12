@@ -130,15 +130,42 @@ per second*, **flop/s, FLOPS**
 # HPC development
 
 
-![](public/img/hpc_development.png)
+![height:300px center](public/img/hpc_development-Nov2022.png)
 
 ---
 
 # Top 500 list
 
-![height:450px center](public/img/top500.png)
+![height:230px center](public/img/top500-Nov2022.png)
 
-https://www.top500.org/lists/top500/2020/11/ (Nov. 2020)
+https://www.top500.org (Nov. 2022)
+
+---
+
+
+# Kebnekaise
+
+<div class="row">
+<div class="column50">
+
+![](public/img/kebnekaise.png)
+
+**Nodes:** 603
+**Cores:** 19288
+**Peak performance:** 984 TFlops/s
+
+</div>
+<div class="column50 columnlightblue">
+
+### Node configuration (standard)
+
+* Intel Xeon E5-2690v4 (Broadwell)
+  * 432 nodes, 128 GB/node
+  * 32 nodes, 2xK80 GPU
+  * 4 nodes, 4xK80 GPU
+  * 20 nodes, 3072 GB/node
+
+</div></div>
 
 ---
 
@@ -238,7 +265,7 @@ https://www.top500.org/lists/top500/2020/11/ (Nov. 2020)
 # Hybrid parallelism
 
 1. Best of both worlds
-1. Communications between nodes (distributed memory)
+1. Communications between nodes (Distributed memory)
 1. Computation within each node (Shared memory)
 
 ---
