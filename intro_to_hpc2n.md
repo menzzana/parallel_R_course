@@ -187,6 +187,19 @@ print(ip, row.names=FALSE)
 
 ---
 
+# Installing your own R packages - setup
+
+First create a folder for installing your own R libraries: 
+
+```console
+mkdir $HOME/<path-to-folder>/R-packages-4.0.4/
+export R_LIBS_USER=$HOME/<path-to-folder>/R-packages-4.0.4/
+```
+
+Change <path-to-folder> to the location of your R package folder (or remove if no subdir). There should be a folder for each version of R - in this case R 4.0.4 if on Kebnekaise.
+
+---
+
 # Installing your own R packages 
 
 Installing from inside R (once per package):
