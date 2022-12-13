@@ -55,12 +55,12 @@ style: |
 3. Count values with distance <= 1
 4. Multiply by 4 since we have a quarter circle 
 
-#### Example to calculate PI from 100 values
+#### Example on how to calculate PI from 100 values
 ```
 y <- runif(100)
 x <- runif(100)
 z <- sqrt(x^2+y^2)
-length(which(z<=1))*4/length(z)
+res <- length(which(z<=1))*4/length(z)
 ```
 
 </div>
@@ -72,7 +72,7 @@ length(which(z<=1))*4/length(z)
 
 ---
 
-# Lab: Calculate PI using parallel lapply
+# Lab: Calculate PI using apply
 
 <row>
 <div class="column50">

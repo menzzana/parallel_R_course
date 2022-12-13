@@ -154,7 +154,7 @@ base     "base"
 
 1. Request a SLURM job allocation
    ```
-   salloc -A <ALLOCATION> -N 1 -t 10
+   salloc -A <ALLOCATION> -p shared -N 1 -t 10
    ```
 1. Add the necessary modules
    ```
@@ -222,8 +222,8 @@ Prints only results
 #!/bin/bash -l
 # Set the job allocation
 #SBATCH -A <allocation>
-# Reservation, if needed
-#SBATCH --reservation=<ID>
+# Run on a shared partition
+#SBATCH -p shared
 # The name of the script is myjob
 #SBATCH -J myjob
 # Only 1 minute wall-clock time

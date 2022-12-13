@@ -5,9 +5,13 @@ calcpi <- function(no) {
   z <- sqrt(x^2+y^2)
   length(which(z<=1))*4/length(z)
   }
+# Set start time
+start_time <- Sys.time()
 # Use lapply on a list of 1000 values
 res <- lapply(1:1000, calcpi)
 # Unlist it as we need it as a vector
 vres <- unlist(res)
 # Print the mean of the results
 print(mean(vres))
+# print end time
+print(Sys.time() - start_time)

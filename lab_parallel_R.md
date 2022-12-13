@@ -58,13 +58,12 @@ style: |
 </div>
 <div class="column50">
 
+#### Example on how to calculate PI from 100 values
 ```
-calcpi <- function(no) {
-  y <- runif(no)
-  x <- runif(no)
-  z <- sqrt(x^2+y^2)
-  length(which(z<=1))*4/length(z)
-  }
+y <- runif(100)
+x <- runif(100)
+z <- sqrt(x^2+y^2)
+res <- length(which(z<=1))*4/length(z)
 ```
 
 </div></row>

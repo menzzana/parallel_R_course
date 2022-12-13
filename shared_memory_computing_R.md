@@ -254,7 +254,8 @@ mcmapply(X, FUN, ...)
 ```
 library(parallel)
 no_cores <- detectCores() - 1
-mclapply(100, simLR, mc.cores = no_cores)
+mclapply(1:100, FUN, 
+  mc.cores = no_cores)
 ```
 
 </div>
@@ -290,7 +291,7 @@ parSapply(cluster, X, FUN)
 library(parallel)
 no_cores <- detectCores() - 1
 cl <- makeCluster(no_cores)
-parLapply(cl, 100, simLR)
+parLapply(cl, 1:100, FUN)
 stopCluster(cl)
 ```
 
@@ -304,19 +305,17 @@ Decrease *no_cores* by one for not interfering with master thread
 
 ---
 
-# Passing objects to sockets
+# Sockets: Passing objects
 
-* If libraries are used you need to load the package to the process
+* If libraries are used you need to load the package within the process
   ```
   clusterEvalQ(cl, library([LIBRARY NAME]))
   ```
-* Can also be used for other functionality/calculations
-  ```
-  clusterEvalQ(cl, 2 + 2)
-  ```
 * Variables are not present within the parallelisation and must be passed.
   ```
+  # Move variable x to the cluster
   clusterExport(cl, "x")
+  # Register the variable x on the cluster
   clusterEvalQ(cl, x)
   ```
 
@@ -324,18 +323,18 @@ Decrease *no_cores* by one for not interfering with master thread
 
 # The foreach package
 
+## Works for serial, shared and distributed memory computing
+
 ---
 # Serial Foreach example
 
+* We have a list of vectors (Default dataset of co2 concentrations in ppm 1959 to 1997)
 ```
-library(foreach)
-foreach(i = 1:10) %do% {
-   MyFunction(i)
-   }
+# Create a list with values from each year
+x <- split(co2, ceiling(seq_along(co2)/12))
+foreach(i = x) %do%
+  mean(i)
 ```
-
-1. **Sequential** calculation of the function on values 1 to 10
-1. Returns a list
 
 ---
 
@@ -348,8 +347,6 @@ foreach(i = 1:10) %do% {
    library(doParallel)
    ```
 1. Similar use as **OpenMP** https://en.wikipedia.org/wiki/OpenMP
-1. Works for sequential, shared and distributed memory computing
-   * No need to detect cores in shared memory computing
 1. More information at https://cran.r-project.org/web/packages/foreach/foreach.pdf
 
 ---
@@ -380,19 +377,19 @@ foreach(i = 1:10) %do% {
 library(parallel)
 library(foreach)
 library(doParallel)
+x <- split(co2, ceiling(seq_along(co2)/12))
 registerDoParallel()
-foreach(i=1:10) %dopar% { 
-   MyFunction(i)
-   }
+foreach(i = x) %do%
+  mean(i)
 ```
 
-1. **Parallel** calculation of the function on values 1 to 10
-
+1. Adding extra libraries
+1. Register the number of processes (Default: all)
+1. Switch *do* with *dopar*
 ---
 
 # Defining the number of parallel processes
 
-1. Necessary for distributed memory computing
 1. Set the number of processes
    ```
    nproc <- makeCluster(<number of processes>)
@@ -417,10 +414,9 @@ Process the tasks results as they are generated
 
 
 ```
-foreach(i = 1:10, .combine='[type]') 
-      %dopar% {
-   MyFunction(i)
-   }
+foreach(i = 1:100,
+   .combine='[type]') %do%
+  FUN(i)
 ```
 
 </div>
@@ -432,7 +428,7 @@ foreach(i = 1:10, .combine='[type]')
 |cbind | returns a column matrix |
 | rbind | returns a row matrix |
 | + | summarize the results |
-
+| * | Multiplicate the results |
 
 </div>
 </row>
@@ -451,7 +447,7 @@ foreach(i = 1:10, .combine='[type]')
 1. Return array of means
    ```
    x <- split(co2, ceiling(seq_along(co2)/12))
-   foreach(i = x, .combine=c) %do%
+   foreach(i = x, .combine='c') %do%
      mean(i)
    ```
 
@@ -461,10 +457,10 @@ foreach(i = 1:10, .combine='[type]')
 
 # Distributed computing
 
-## foreach
+## How to use foreach for distributed computing
 
 * Can be used for distributed computing using *doMPI* library
-* R seldomly scales above one node
+* R seldomly scales above one node on a supercomputer
 
 ```
 library(doMPI)
