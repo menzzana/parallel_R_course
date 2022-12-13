@@ -176,34 +176,10 @@ ci <- boot.ci(res, type="basic")
 sprintf("95%% CI from %f - %f", ci$basic[1,4], ci$basic[1,5])
 ```
 
----
-
-# Permutation
-
-<row>
-<div class="column50">
-
-* Testing *null hypothesis* under all possible rearrangements of the observed data points
-* Are primarily used to provide a p-value
-* Drawing random samples, without replacement, from original samples to create **R** datasets
-
-</div>
-<div class="column50">
-
-| sim | type |
-| --- | --- |
-| ordinary | bootstrap |
-| permutation | permutation |
-
-```
-boot.ci(x, type="basic", sim="[type]")
-```
-
-</div></row>
 
 ---
 
-# How to use this function in parallel
+# How to use boot function in parallel
 
 ### Parameter: parallel
 
@@ -214,7 +190,7 @@ boot.ci(x, type="basic", sim="[type]")
 | snow | snow, permutation | cluster |
 
 ```
-boot.ci(x, type="basic", parallel="[type]", ncpus=[cores], cl=[cluster])
+boot(data, statistic,R,  parallel="[type]", ncpus=[cores], cl=[cluster])
 ```
 
 ---
