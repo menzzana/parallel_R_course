@@ -52,16 +52,15 @@ style: |
 
 1. Randomize a number of x and y values (0-1)
 2. Calculate distance from origo
-3. Count values with distance>1
+3. Count values with distance <= 1
 4. Multiply by 4 since we have a quarter circle 
 
+#### Example to calculate PI from 100 values
 ```
-calcpi <- function(no) {
-  y <- runif(no)
-  x <- runif(no)
-  z <- sqrt(x^2+y^2)
-  length(which(z<=1))*4/length(z)
-  }
+y <- runif(100)
+x <- runif(100)
+z <- sqrt(x^2+y^2)
+length(which(z<=1))*4/length(z)
 ```
 
 </div>
@@ -78,6 +77,6 @@ calcpi <- function(no) {
 <row>
 <div class="column50">
 
-1. Implement the function calcpi using **lapply**
+1. Implement the function calcpi using any of the **apply** functions
 1. Time your code
  

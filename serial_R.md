@@ -248,8 +248,7 @@ srun -n 1 R --no-save < [R file]
 # Time your software
 
 * Calculate how fast your code is
-* Compare parallel execution of your code
-* Compare parallel execution with increasing number of threads
+* Compare parallel execution of your code with increasing number of processes
 
 <row>
 <div class="column50">
@@ -263,11 +262,14 @@ srun -n 1 R --no-save < [R file]
    ``` 
 1. Method 2
    ``` 
-   print(system.time({
-   <ALL THE CODE>
-   }))
-   user  system elapsed 
-   4.763   0.007   3.780  
+   library(microbenchmark)
+   print(microbenchmark({
+     <ALL THE CODE>
+     }))
+   expr min lq mean median uq max neval
+   ```
+   ```
+   summary(microbenchmark(<CODE>))$mean
    ``` 
 
 </div>
@@ -289,11 +291,11 @@ srun -n 1 R --no-save < [R file]
 
 # Example of lapply
 
-* We have a list of vectors (Default dataset in R: *motor trend cars*)
+* We have a list of vectors (Default dataset of co2 concentrations in ppm 1959 to 1997)
   ``` 
-  x <- list(mtcars$hp, mtcars$wt, mtcars$qsec)
+  x <- split(co2, ceiling(seq_along(co2)/12))
   ``` 
-* Using **for** loop to calculate mean of *x*
+* Using **for** loop to calculate yearly mean of *x*
   ``` 
   for (i in x) {
    print(mean(i))
@@ -310,9 +312,9 @@ srun -n 1 R --no-save < [R file]
 
 | Function | Arguments | Objective | Input | Output |
 | --- | --- | --- | --- | --- |
-| apply | apply (x, M, FUN) | Apply to rows (M=1), columns (M=2), both (M=c(1,2()) | Data frame or vector | Vector, list, array |
-| lapply | lapply(x, FUN) | Apply to all elements of the input | List, vector or data frame | list |
-| sapply | sapply(x, FUN) | apply to all the elements | List, vector or data frame | Vector, matrix |
+| apply | apply (x, M, FUN) | Apply to rows (M=1), columns (M=2), both (M=c(1,2()) | Data frame, vector | Vector, list, array |
+| lapply | lapply(x, FUN) | Apply to all elements of the input | List, vector, data frame | list |
+| sapply | sapply(x, FUN) | apply to all the elements | List, vector, data frame | Vector, matrix |
 
 ---
 
@@ -321,8 +323,7 @@ srun -n 1 R --no-save < [R file]
 ### Easy method to multiply your data for additional analysis
 
 ``` 
-x <- cbind(mtcars$wt, mtcars$hp)
-y <- replicate(n = 10, expr = x, simplify = F)
+y <- replicate(n = 10, expr = co2, simplify = F)
 ``` 
 
 ### Replicate is a wrapper for sapply

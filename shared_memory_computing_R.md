@@ -230,7 +230,7 @@ Process where a **CPU** splits each of its physical cores into virtual cores, wh
 ## Socket
 
 * <font color=green>Works on any system (including Windows).</font>
-* <font color=green>Each process on each node is unique so it can’t cross-contaminate but slower</font>
+* <font color=green>Each process on each node is unique so it can’t cross-contaminate</font>
 * <font color=red>Each process is unique so it will be slower</font>
 * <font color=red>Things such as package loading need to be done in each process separately. Variables defined on your main version of R don’t exist on each core unless explicitly placed there.</font>
 * <font color=red>More complicated to implement.</font>
@@ -443,20 +443,19 @@ foreach(i = 1:10, .combine='[type]')
 
 1. Equivalent to **lapply(x, mean)**
    ```
-   foreach(x = cbind(mtcars$hp, mtcars$wt, mtcars$qsec)) %do%
-     mean(x)
+   x <- split(co2, ceiling(seq_along(co2)/12))
+   foreach(i = x) %do%
+     mean(i)
    ```
-1. Multiple … arguments
+
+1. Return array of means
    ```
-   foreach(i=1:4, j=1:10) %do%
-     sqrt(i+j)
+   x <- split(co2, ceiling(seq_along(co2)/12))
+   foreach(i = x, .combine=c) %do%
+     mean(i)
    ```
-1. Instead of **colMeans(mtcars)**
-   ```
-   m <- mtcars
-   foreach(i=1:ncol(m), .combine=c) %do%
-     mean(m[,i])
-   ```
+
+1. replace *do* with *dopar* for parallelisation
 
 ---
 
@@ -472,9 +471,9 @@ library(doMPI)
 cl <- startMPIcluster()
 # You define N processes when allocating your job
 registerDoMPI(cl)
-x <- foreach(i=1:10) %dopar% {
-  sqrt(i)
-  }
+x <- split(co2, ceiling(seq_along(co2)/12))
+foreach(i = x) %dopar%
+  mean(i)
 closeCluster(cl)
 mpi.quit()
 ```
