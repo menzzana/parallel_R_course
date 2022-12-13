@@ -245,10 +245,9 @@ srun -n 1 R --no-save < [R file]
 
 ---
 
-# Time your software
+# Calculate how fast your code is
 
-* Calculate how fast your code is
-* Compare parallel execution of your code with increasing number of processes
+* Compare parallel execution with increasing number of processes
 
 <row>
 <div class="column50">
@@ -258,26 +257,42 @@ srun -n 1 R --no-save < [R file]
    start_time <- Sys.time()
    <ALL THE CODE>
    print(Sys.time() - start_time)
-   Time difference of 16.87934 secs
    ``` 
 1. Method 2
    ``` 
-   library(microbenchmark)
-   print(microbenchmark({
-     <ALL THE CODE>
-     }))
-   expr min lq mean median uq max neval
-   ```
-   ```
-   summary(microbenchmark(<CODE>))$mean
+   print(system.time({
+   <ALL THE CODE>
+   }))
    ``` 
-
+   
 </div>
 <div class="column50">
 
-![width:1200px](public/img/timing.png)
+![width:500px](public/img/timing.png)
 
 </div></row>
+
+---
+
+# Microbenchmark
+
+* Library to provide more accurate timing of your functions
+* By default runs your code a 100 times
+  * You can set the flag *times=N* to change that
+* Outputs statistics of your code
+
+``` 
+library(microbenchmark)
+res <- microbenchmark({
+  <ALL THE CODE>
+  })
+```
+
+### To get only the average of the computing time
+
+```
+summary(res)$mean
+``` 
 
 ---
 
@@ -294,12 +309,12 @@ srun -n 1 R --no-save < [R file]
 * We have a list of vectors (Default dataset of co2 concentrations in ppm 1959 to 1997)
   ``` 
   x <- split(co2, ceiling(seq_along(co2)/12))
+  names(x) <- c(1959:1997)
   ``` 
 * Using **for** loop to calculate yearly mean of *x*
   ``` 
-  for (i in x) {
-   print(mean(i))
-   }
+  for (i in x)
+    print(mean(i))
   ``` 
 * Using **lapply** to calculate mean of *x*
   ``` 
@@ -328,7 +343,7 @@ y <- replicate(n = 10, expr = co2, simplify = F)
 
 ### Replicate is a wrapper for sapply
 
-| Simplify | Type |
+| Simplify | Return type |
 | --- | --- |
-| TRUE | Array |
-| FALSE | List |
+| T (True) | Array |
+| F (False) | List |
