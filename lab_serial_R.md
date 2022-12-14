@@ -77,6 +77,6 @@ res <- length(which(z<=1))*4/length(z)
 <row>
 <div class="column50">
 
-1. Implement the function calcpi using any of the **apply** functions
+1. Calculate PI using montecarlo and any of the **apply** functions
 1. Time your code
  

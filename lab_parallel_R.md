@@ -50,7 +50,7 @@ style: |
 <row>
 <div class="column50">
 
-1. Implement the function calcpi using **mclapply**
+1. Calculate PI using **mclapply**
 2. Try with different number of cores
 3. Run your code on your **laptop** and on the **cluster**
 4. Calculate *speedup* with increasing number of cores 
@@ -72,7 +72,7 @@ res <- length(which(z<=1))*4/length(z)
 
 # Lab 2: Calculate PI using parallel parlapply
 
-1. Implement the function calcpi using **parlapply**
+1. Calculate PI using **parlapply**
 2. Try with different number of cores
 3. Run your code on your **laptop** and on the **cluster**
 4. Calculate *speedup* with increasing number of cores 
