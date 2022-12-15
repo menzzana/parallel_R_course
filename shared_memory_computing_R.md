@@ -329,7 +329,10 @@ Decrease *no_cores* by one for not interfering with master thread
 # Serial Foreach example
 
 * We have a list of vectors (Default dataset of co2 concentrations in ppm 1959 to 1997)
+* you need the *foreach* package
+
 ```
+library(foreach)
 # Create a list with values from each year
 x <- split(co2, ceiling(seq_along(co2)/12))
 foreach(i = x) %do%
@@ -343,7 +346,6 @@ foreach(i = x) %do%
 1. Must be installed
    ```
    library(parallel)
-   library(foreach)
    library(doParallel)
    ```
 1. Similar use as **OpenMP** https://en.wikipedia.org/wiki/OpenMP
@@ -356,7 +358,6 @@ foreach(i = x) %do%
 1. Packages needed
    ```
    library(parallel)
-   library(foreach)
    library(doParallel)
    ```
 1. Shows how many parallel processes are available
@@ -464,6 +465,7 @@ foreach(i = 1:100,
 
 ```
 library(doMPI)
+library(foreach)
 cl <- startMPIcluster()
 # You define N processes when allocating your job
 registerDoMPI(cl)
