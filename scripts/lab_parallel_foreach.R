@@ -1,9 +1,10 @@
 library(parallel)
 library(foreach)
 library(doParallel)
+# Function for calculating PI with no values
 calcpi <- function(no) {
-  y <- runif(100)
-  x <- runif(100)
+  y <- runif(no)
+  x <- runif(no)
   z <- sqrt(x^2+y^2)
   length(which(z<=1))*4/length(z)
 }
@@ -18,8 +19,9 @@ for (n in 1:no_cores) {
   # Create a cluster
   nproc <- makeCluster(n)
   registerDoParallel(nproc)
-  # Use foreach on a vector of 100000 values on n cores
-  input <- 1:10000
+  # Create a vector 1000 length with 100 randomizations
+  input <- rep(100, 1000)
+  # Use foreach on n cores
   registerDoParallel(nproc)
   res <- foreach(i = input, .combine = '+') %dopar%
     calcpi(i)

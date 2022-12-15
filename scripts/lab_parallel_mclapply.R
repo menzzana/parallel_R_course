@@ -1,8 +1,8 @@
 library(parallel)
-# Function for calculating PI with 100 values
+# Function for calculating PI with no values
 calcpi <- function(no) {
-  y <- runif(100)
-  x <- runif(100)
+  y <- runif(no)
+  x <- runif(no)
   z <- sqrt(x^2+y^2)
   length(which(z<=1))*4/length(z)
 }
@@ -14,8 +14,9 @@ for (n in 1:no_cores) {
   print(n)
   # Set start time
   start_time <- Sys.time()
-  # Use mclapply on a vector of 100000 values on n cores
-  input <- 1:100000
+  # Create a vector 100000 length with 100 randomizations
+  input <- rep(100, 100000)
+  # Use mclapply on n cores
   res <- mclapply(input, calcpi, mc.cores = n)
   # Unlist it as we need it as a vector
   vres <- unlist(res)
