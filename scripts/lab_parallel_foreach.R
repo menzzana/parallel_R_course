@@ -18,7 +18,7 @@ for (n in 1:no_cores) {
   # Create a cluster
   nproc <- makeCluster(n)
   registerDoParallel(nproc)
-  # Use foreach on a list of 100000 values on n cores
+  # Use foreach on a vector of 100000 values on n cores
   input <- 1:10000
   registerDoParallel(nproc)
   res <- foreach(i = input, .combine = '+') %dopar%

@@ -16,7 +16,7 @@ for (n in 1:no_cores) {
   start_time <- Sys.time()
   # Create a cluster
   cl <- makeCluster(n)
-  # Use mclapply on a list of 100000 values on n cores
+  # Use mclapply on a vector of 100000 values on n cores
   input <- 1:100000
   res <- parLapply(cl, input, calcpi)
   # Unlist it as we need it as a vector
