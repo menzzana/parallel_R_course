@@ -379,7 +379,7 @@ library(foreach)
 library(doParallel)
 x <- split(co2, ceiling(seq_along(co2)/12))
 registerDoParallel()
-foreach(i = x) %do%
+foreach(i = x) %dopar%
   mean(i)
 ```
 
