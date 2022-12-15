@@ -17,7 +17,7 @@ for (n in 1:no_cores) {
   # Create a cluster
   cl <- makeCluster(n)
   # Use mclapply on a list of 100000 values on n cores
-  input <- list(1:100000)
+  input <- 1:100000
   res <- parLapply(cl, input, calcpi)
   # Unlist it as we need it as a vector
   vres <- unlist(res)

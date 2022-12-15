@@ -15,7 +15,7 @@ for (n in 1:no_cores) {
   # Set start time
   start_time <- Sys.time()
   # Use mclapply on a list of 100000 values on n cores
-  input <- list(1:100000)
+  input <- 1:100000
   res <- mclapply(input, calcpi, mc.cores = n)
   # Unlist it as we need it as a vector
   vres <- unlist(res)

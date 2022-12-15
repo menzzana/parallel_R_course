@@ -8,7 +8,7 @@ calcpi <- function(no) {
 # Set start time
 start_time <- Sys.time()
 # Use lapply on a list of 1000 values
-input <- list(1:1000)
+input <- 1:1000
 res <- lapply(input, calcpi)
 # Unlist it as we need it as a vector
 vres <- unlist(res)
