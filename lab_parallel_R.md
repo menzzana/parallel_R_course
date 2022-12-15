@@ -76,3 +76,14 @@ res <- length(which(z<=1))*4/length(z)
 2. Try with different number of cores
 3. Run your code on your **laptop** and on the **cluster**
 4. Calculate *speedup* with increasing number of cores 
+
+---
+
+# Lab 3: Calculate PI using parallel foreach
+
+1. Calculate PI using **foreach**
+2. Try with different number of cores
+3. Run your code on your **laptop** and on the **cluster**
+4. Calculate *speedup* with increasing number of cores 
+
+---
